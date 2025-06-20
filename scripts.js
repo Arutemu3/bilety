@@ -1,10 +1,10 @@
 document.addEventListener('DOMContentLoaded', function () {
     let tickets = [];
 
-    fetch('tickets (1).json')  // 👈 исправлено имя файла
+    fetch('tickets.json')
         .then(response => {
             if (!response.ok) {
-                throw new Error('Не удалось загрузить tickets (1).json');
+                throw new Error('Не удалось загрузить tickets.json');
             }
             return response.json();
         })
@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
             getRandomTicket();
         })
         .catch(error => {
-            console.warn('Ошибка загрузки tickets (1).json:', error);
+            console.warn('Ошибка загрузки tickets.json:', error);
             tickets = JSON.parse(localStorage.getItem('tickets')) || [];
             updateStats();
             renderNotesList();
