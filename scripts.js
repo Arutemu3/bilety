@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     let tickets = [];
 
-    fetch('tickets.json')
+    fetch('tickets.json?' + Date.now())  // Обновляем кеш и загружаем tickets.json
         .then(response => {
             if (!response.ok) {
                 throw new Error('Не удалось загрузить tickets.json');
