@@ -1,12 +1,28 @@
 document.addEventListener('DOMContentLoaded', function () {
-    let tickets = JSON.parse(localStorage.getItem('tickets')) || [
-        {
-            id: 1,
-            question: "Предмет, цель, задачи курса 'Истории России'",
-            answer: "Предмет: изучение процессов становления и развития российской государственности. Цель: формирование системного понимания исторического пути. Задачи: анализ ключевых событий, выявление причинно-следственных связей.",
-            learned: false
-        }
-    ];
+    let tickets = [];
+
+fetch('tickets (1).json')
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Не удалось загрузить tickets (1).json');
+    }
+    return response.json();
+  })
+  .then(data => {
+    tickets = data;
+    saveTickets();
+    updateStats();
+    renderNotesList();
+    getRandomTicket(); // показать билет после загрузки
+  })
+  .catch(error => {
+    console.warn('Ошибка загрузки tickets.json:', error);
+    // fallback на localStorage
+    tickets = JSON.parse(localStorage.getItem('tickets')) || [];
+    updateStats();
+    renderNotesList();
+  });
+
 
     function saveTickets() {
         localStorage.setItem('tickets', JSON.stringify(tickets));
