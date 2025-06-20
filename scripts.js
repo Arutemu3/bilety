@@ -1,28 +1,27 @@
 document.addEventListener('DOMContentLoaded', function () {
     let tickets = [];
 
-fetch('tickets (1).json')
-  .then(response => {
-    if (!response.ok) {
-      throw new Error('Не удалось загрузить tickets (1).json');
-    }
-    return response.json();
-  })
-  .then(data => {
-    tickets = data;
-    saveTickets();
-    updateStats();
-    renderNotesList();
-    getRandomTicket(); // показать билет после загрузки
-  })
-  .catch(error => {
-    console.warn('Ошибка загрузки tickets.json:', error);
-    // fallback на localStorage
-    tickets = JSON.parse(localStorage.getItem('tickets')) || [];
-    updateStats();
-    renderNotesList();
-  });
-
+    fetch('tickets (1).json')  // 👈 исправлено имя файла
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Не удалось загрузить tickets (1).json');
+            }
+            return response.json();
+        })
+        .then(data => {
+            tickets = data;
+            saveTickets();
+            updateStats();
+            renderNotesList();
+            getRandomTicket();
+        })
+        .catch(error => {
+            console.warn('Ошибка загрузки tickets (1).json:', error);
+            tickets = JSON.parse(localStorage.getItem('tickets')) || [];
+            updateStats();
+            renderNotesList();
+            getRandomTicket();
+        });
 
     function saveTickets() {
         localStorage.setItem('tickets', JSON.stringify(tickets));
@@ -46,9 +45,6 @@ fetch('tickets (1).json')
     const exportBtn = document.getElementById('export-btn');
 
     let currentTicket = null;
-
-    updateStats();
-    renderNotesList();
 
     themeToggle.addEventListener('click', () => {
         document.body.classList.toggle('dark-theme');
@@ -144,10 +140,9 @@ fetch('tickets (1).json')
             currentTicket = availableTickets[Math.floor(Math.random() * availableTickets.length)];
             questionEl.textContent = currentTicket.question;
             answerEl.innerHTML = currentTicket.answer
-  .split('\n')
-  .map(line => `<p>${line.trim()}</p>`)
-  .join('');
-
+                .split('\n')
+                .map(line => `<p>${line.trim()}</p>`)
+                .join('');
             answerEl.classList.add('hidden');
             showAnswerBtn.innerHTML = '<i class="fas fa-eye"></i> Показать ответ';
             toggleLearnedBtn.innerHTML = currentTicket.learned
@@ -168,14 +163,13 @@ fetch('tickets (1).json')
         );
         notesList.innerHTML = filtered.map(ticket => `
             <div class="note-card ${ticket.learned ? 'learned' : ''}">
-    <h3>${ticket.question}</h3>
-    ${ticket.answer
-      .split('\n')
-      .map(line => `<p>${line.trim()}</p>`)
-      .join('')}
-    <small>${ticket.learned ? '✓ Выучен' : ''}</small>
-</div>
-
+                <h3>${ticket.question}</h3>
+                ${ticket.answer
+                    .split('\n')
+                    .map(line => `<p>${line.trim()}</p>`)
+                    .join('')}
+                <small>${ticket.learned ? '✓ Выучен' : ''}</small>
+            </div>
         `).join('');
     }
 
